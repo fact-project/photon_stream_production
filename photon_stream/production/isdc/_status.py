@@ -17,9 +17,13 @@ from .qsub import qsub
 from .qsub import QUEUE_NAME
 from shutil import which
 import shutil
+import datetime
 
 QSUB_OBS_STATUS_PREFIX = 'phs_obs_status'
 
+
+def stdout(msg):
+    print('{time:"' + datetime.datetime.now().isoformat() + '"' + ', msg:"' + msg + '"}')
 
 def status(
     obs_dir=join('/gpfs0', 'fact', 'processing', 'public', 'phs', 'obs'),
@@ -27,7 +31,7 @@ def status(
     queue=QUEUE_NAME,
     runs_in_qstat=None
 ):
-    print('Start status')
+    stdout('Start')
 
     runstatus_path = join(obs_dir, 'runstatus.csv')
     runstatus_lock_path = join(obs_dir, '.lock.runstatus.csv')
@@ -40,13 +44,13 @@ def status(
     try:
         runstatus_lock = FileLock(runstatus_lock_path)
         with runstatus_lock.acquire(timeout=1):
-            print('runstatus.csv is locked')
+            stdout('Aquired lock for runstatus.csv')
 
             tmp_status = read_and_remove_tmp_status(tmp_status_dir)
             runstatus = rs.read(runstatus_path)
             runstatus = add_tmp_status_to_runstatus(tmp_status, runstatus)
             ri.write(runstatus, runstatus_path)
-            print('Add '+str(len(tmp_status))+' new stati')
+            stdout('Add '+str(len(tmp_status))+' new stati')
 
             std = [
                 {'key': 'StdOutSize', 'suffix': '.o'},
@@ -56,7 +60,7 @@ def status(
             # StdOutSize and StdErrorSize
             #----------------------------
             for s in std:
-                print('Collect', s['key'])
+                stdout('Collect {:s}'.format(s['key']))
                 no_std_yet = np.isnan(runstatus[s['key']])
                 for i, run in runstatus[no_std_yet].iterrows():
                     fNight = int(np.round(run.fNight))
@@ -74,30 +78,28 @@ def status(
 
             # PhsSize and NumActualPhsEvents
             #-------------------------------
-            print('Collect NumActualPhsEvents')
+            stdout('Collect NumActualPhsEvents')
             runs_to_be_checked_now, runstatus = (
                 runs_to_be_checked_now_and_incremented_runstatus(
                     runstatus
                 )
             )
 
-            print(
-                len(runstatus)-len(runs_to_be_checked_now),
-                'are not checked again for NumActualPhsEvents'
-            )
+            stdout('{:d} runs are not checked again for NumActualPhsEvents'.format(
+                len(runstatus)-len(runs_to_be_checked_now)))
 
             if runs_in_qstat is None:
                 runs_in_qstat = qstat(is_in_JB_name=QSUB_OBS_STATUS_PREFIX)
+             
+            stdout('{:d} satus-jobs for NumActualPhs')
 
             runs_to_be_checked_now = ri.remove_from_first_when_also_in_second(
                 first=runs_to_be_checked_now,
                 second=runs_in_qstat,
             )
 
-            print(
-                len(runs_to_be_checked_now),
-                'runs are checked now for NumActualPhsEvents'
-            )
+            stdout('{:d} runs are checked now for NumActualPhsEvents'.format(
+                len(runs_to_be_checked_now)))
 
             num_runs_for_qsub = max_jobs_in_qsub - len(runs_in_qstat)
             runstatus = runstatus.set_index(ri.ID_RUNINFO_KEYS)
@@ -156,10 +158,10 @@ def status(
             runstatus['StatusIteration'] -= runstatus['StatusIteration'].min()
             runstatus = set_is_ok(runstatus)
             ri.write(runstatus, runstatus_path)
-            print(i, 'status requests submitted to qsub')
+            stdout('{:d} status requests submitted to qsub'.format(i))
     except Timeout:
-        print('Could not lock '+runstatus_path)
-    print('End')
+        stdout('Could not aquire lock for '+runstatus_path)
+    stdout('End')
 
 
 def runs_to_be_checked_now_and_incremented_runstatus(runstatus):
