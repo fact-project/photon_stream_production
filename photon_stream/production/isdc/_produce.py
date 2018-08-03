@@ -1,4 +1,3 @@
-from tqdm import tqdm
 import os
 from os.path import join
 import numpy as np
@@ -10,6 +9,7 @@ from .. import runinfo as ri
 from .qsub import qsub
 from .qsub import QUEUE_NAME
 from .qstat import qstat
+from ..tools import jsonlog
 
 QSUB_OBS_PRODUCE_PREFIX = 'phs_obs_produce'
 
@@ -38,13 +38,14 @@ def produce(
     max_jobs_in_qsub=256,
     runs_in_qstat=None,
 ):
-    print('Start produce')
+    jsonlog('Start')
 
     obs_dir = join(phs_dir, 'obs')
     runstatus_path = join(obs_dir, 'runstatus.csv')
 
     if runs_in_qstat is None:
         runs_in_qstat = qstat(is_in_JB_name=QSUB_OBS_PRODUCE_PREFIX )
+    jsonlog('{:d} production-jobs are still running in qsub'.format(len(runs_in_qstat)))
 
     runstatus = rs.read(runstatus_path)
     runs_to_be_converted = runstatus[np.isnan(runstatus['PhsSize'])]
@@ -69,7 +70,7 @@ def produce(
     num_jobs_for_qsub = max_jobs_in_qsub - len(runs_in_qstat)
 
     i = 0
-    for job in tqdm(jobs, desc='qsub', total=num_jobs_for_qsub):
+    for job in jobs:
         if i > num_jobs_for_qsub:
             break
         i += 1
@@ -78,5 +79,6 @@ def produce(
             exe_path=which('phs.isdc.obs.produce.worker'),
             queue=queue,
         )
-    print(i, 'production requests submitted to qsub')
-    print('End')
+    jsonlog('{:d} production-jobs submitted to qsub'.format(i))
+    jsonlog('End')
+
