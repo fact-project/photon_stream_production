@@ -17,7 +17,7 @@ import os
 def main():
     try:
         docopt.docopt(__doc__)
-        print('Start syncronize La Palma')
+        ps.production.tools.jsonlog('Start')
         ps.production.runstatus.update_to_latest(
             obs_dir=os.path.join(
                 '/gpfs0',
@@ -29,9 +29,9 @@ def main():
             ),
             lock_timeout=23*60*60
         )
-        print('End')
+        ps.production.tools.jsonlog('End')
     except docopt.DocoptExit as e:
-        print(e)
+        ps.production.tools.jsonlog(str(e))
 
 if __name__ == '__main__':
     main()
