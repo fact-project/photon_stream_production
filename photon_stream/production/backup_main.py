@@ -14,6 +14,7 @@ import os
 from filelock import FileLock
 from filelock import Timeout
 import subprocess as sp
+from photon_stream.production.tools import jsonlog 
 
 
 def folder_wise_rsync_a(
@@ -31,13 +32,13 @@ def folder_wise_rsync_a(
         rel_path = os.path.relpath(dirname, source_path)
         fr = rel_path+'/'
         to = destination_host + destination_path
-        cmd = "rsync -lptgodD -v --relative " + fr + " " + to
-        print('\n', cmd, '\n')
+        cmd = "rsync -lptgodD --relative " + fr + " " + to
+        jsonlog(fr)
         sp.call(cmd, shell=True, cwd=source_path)
 
 
 def backup():
-    print('Start backup to ETH Zurich')
+    jsonlog('Start backup from ISDC-Geneva to ETH-Zurich')
     rsync_lock_path = join(
         '/',
         'home',
@@ -48,6 +49,7 @@ def backup():
     try:
         rsync_lock = FileLock(rsync_lock_path)
         with rsync_lock.acquire(timeout=3600):
+            jsonlog('Aquiered lock for ' + rsync_lock_path)
             folder_wise_rsync_a(
                 source_host='',
                 source_path=join(
@@ -62,8 +64,8 @@ def backup():
                 destination_path=join('/', 'data', 'fact_public', 'phs/'),
             )
     except Timeout:
-        print('Could not lock '+rsync_lock_path)
-    print('End backup')
+        jsonlog('Could not aquire lock for ' + rsync_lock_path)
+    jsonlog('End backup from ISDC-Geneva to ETH-Zurich')
 
 
 def main():
@@ -71,7 +73,7 @@ def main():
         docopt.docopt(__doc__)
         backup()
     except docopt.DocoptExit as e:
-        print(e)
+        jsonlog(str(e))
 
 if __name__ == '__main__':
     main()
