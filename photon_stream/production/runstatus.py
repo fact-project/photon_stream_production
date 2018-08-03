@@ -11,7 +11,7 @@ import filelock
 from . import runinfo as ri
 from .runinfo import ID_RUNINFO_KEYS
 from .runinfo2runstatus import runinfo2runstatus
-
+from .tools import jsonlog
 
 def read(path):
     return ri.read(path)
@@ -38,13 +38,17 @@ def update_to_latest(obs_dir, latest_runstatus=None, lock_timeout=1):
     """
     runstatus_path = join(obs_dir, 'runstatus.csv')
     if latest_runstatus is None:
+        jsonlog('Download latest runstatus from FACT.')
         latest_runstatus = _download_latest()
+        jsonlog('Download complete.')
 
     lock = filelock.FileLock(join(obs_dir, '.lock.runstatus.csv'))
     with lock.acquire(timeout=lock_timeout):
+        jsonlog('Aquired lock for .lock.runstatus.csv.')
         runstatus = read(runstatus_path)
         new_runstatus = _append_new_runstatus(runstatus, latest_runstatus)
         ri.write(new_runstatus, runstatus_path)
+    jsonlog('Appended latest runs from FACT to local runstatus.')
     return new_runstatus
 
 
