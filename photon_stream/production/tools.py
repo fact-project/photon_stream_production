@@ -8,6 +8,10 @@ from ..event_list_reader import EventListReader
 from fact.path import tree_path
 import numpy as np
 import json
+import datetime
+
+def jsonlog(msg):
+    print('{time:"' + datetime.datetime.now().isoformat() + '"' + ', msg:"' + msg + '"}')
 
 
 def number_of_events_in_file(path):
