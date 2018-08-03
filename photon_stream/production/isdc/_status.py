@@ -70,7 +70,7 @@ def status(
                     std_size = np.nan
                     if exists(std_path):
                         std_size = os.stat(std_path).st_size
-                    runstatus.set_value(i, s['key'], std_size)
+                    runstatus.at[i, s['key']] = std_size
 
             # PhsSize and NumActualPhsEvents
             #-------------------------------
@@ -119,11 +119,7 @@ def status(
                 if np.isnan(run.PhsSize):
                     if exists(phs_path):
                         phs_size = os.stat(phs_path).st_size
-                        runstatus.set_value(
-                            (fNight, fRunID),
-                            'PhsSize',
-                            phs_size
-                        )
+                        runstatus.at[(fNight, fRunID), 'PhsSize'] = phs_size
                         # Submitt the intense task of event counting to qsub,
                         # and collect the output next time in
                         # phs/obs/.tmp_status
@@ -152,22 +148,9 @@ def status(
                         )
                         i += 1
                     else:
-                        runstatus.set_value(
-                            (fNight, fRunID),
-                            'PhsSize',
-                            np.nan
-                        )
-                        runstatus.set_value(
-                            (fNight, fRunID),
-                            'NumActualPhsEvents',
-                            np.nan
-                        )
-
-                runstatus.set_value(
-                    (fNight, fRunID),
-                    'StatusIteration',
-                    run['StatusIteration'] + 1
-                )
+                        runstatus.at[(fNight, fRunID), 'PhsSize'] = np.nan
+                        runstatus.at[(fNight, fRunID), 'NumActualPhsEvents'] = np.nan
+                runstatus.at[(fNight, fRunID), 'StatusIteration'] = run['StatusIteration'] + 1
 
             runstatus = runstatus.reset_index()
             runstatus['StatusIteration'] -= runstatus['StatusIteration'].min()
@@ -216,11 +199,7 @@ def read_and_remove_tmp_status(tmp_status_dir):
 def add_tmp_status_to_runstatus(tmp_status, runstatus):
     irs = runstatus.set_index(ri.ID_RUNINFO_KEYS)
     for i, run in tmp_status.iterrows():
-        irs.set_value(
-            (run['fNight'], run['fRunID']),
-            'NumActualPhsEvents',
-            run['NumActualPhsEvents']
-        )
+        irs.at[(run['fNight'], run['fRunID']), 'NumActualPhsEvents'] = run['NumActualPhsEvents']
     return irs.reset_index()
 
 
