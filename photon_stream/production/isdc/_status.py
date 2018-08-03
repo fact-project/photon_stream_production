@@ -91,7 +91,7 @@ def status(
             if runs_in_qstat is None:
                 runs_in_qstat = qstat(is_in_JB_name=QSUB_OBS_STATUS_PREFIX)
              
-            stdout('{:d} satus-jobs for NumActualPhs')
+            stdout('{:d} satus-jobs for NumActualPhs are running now'.format(len(runs_in_qstat)))
 
             runs_to_be_checked_now = ri.remove_from_first_when_also_in_second(
                 first=runs_to_be_checked_now,
