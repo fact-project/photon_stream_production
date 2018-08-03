@@ -16,6 +16,7 @@ from .runinfo import OBSERVATION_RUN_TYPE_KEY
 from .runinfo import DRS_RUN_TYPE_KEY
 from .runinfo import DRS_STEP_KEY
 from . import tools
+from .tools import jsonlog
 
 _fact_tools_jar_path = os.path.join(
     '/home',
@@ -124,17 +125,11 @@ def jobs_and_directory_tree(
             night, runid, prefix=fact_raw_dir, suffix='.fits.fz'
         )
         if not exists(job['--raw_path']):
-            print(
-                night,
-                runid,
-                'raw path',
-                job['--raw_path'],
-                'does not exist.'
-            )
+            jsonlog('{n:d}-{r:03d} raw-file does not exist.'.format(n=night, r=runid))
             continue
 
         if np.isnan(r.DrsRunID):
-            print(night, runid, 'no drs run assigned.')
+            jsonlog('{n:d}-{r:03d} no drs-run assigned.'.format(n=night, r=runid))
             continue
         else:
             drs_runid = int(np.round(r.DrsRunID))
@@ -142,20 +137,14 @@ def jobs_and_directory_tree(
             night, drs_runid , prefix=fact_drs_dir, suffix='.drs.fits.gz'
         )
         if not exists(job['--drs_path']):
-            print(
-                night,
-                runid,
-                'drs path',
-                job['--drs_path'],
-                'does not exist.'
-            )
+            jsonlog('{n:d}-{r:03d} drs-file does not exist.'.format(n=night, r=runid))
             continue
 
         aux_dir = dirname(
             tree_path(night, runid, prefix=fact_aux_dir, suffix='')
         )
         if not is_aux_dir_pointing_complete(aux_dir):
-            print(night, runid, 'aux dir', aux_dir, 'is not complete yet.')
+            jsonlog('{n:d}-{r:03d} aux-dir is not complete.'.format(n=night, r=runid))
             continue
 
         job['--aux_dir'] = aux_dir
