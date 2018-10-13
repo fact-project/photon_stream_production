@@ -1,7 +1,7 @@
 import gzip
-from ...simulation_truth.corsika_headers import read_corsika_headers_from_file
-from ...simulation_truth.corsika_headers import append_corsika_headers_to_file
-from ...io import is_gzipped_file
+from photon_stream.simulation_truth.corsika_headers import read_corsika_headers_from_file
+from photon_stream.simulation_truth.corsika_headers import append_corsika_headers_to_file
+from photon_stream.io import is_gzipped_file
 import shutil
 
 
