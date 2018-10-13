@@ -1,26 +1,23 @@
 from distutils.core import setup
 
 setup(
-    name='photon_stream',
-    version='0.0.6',
-    description='Read, write, manipulate and plot a Photon Stream',
+    name='photon_stream_production',
+    version='0.0.1',
+    description='Produce the photon_stream at ISDC at Geneva',
     url='https://github.com/fact-project/',
     author='Sebastian Achim Mueller',
     author_email='sebmuell@phys.ethz.ch',
     license='MIT',
     packages=[
-        'photon_stream',
-        'photon_stream.io',
-        'photon_stream.production',
-        'photon_stream.production.ethz',
-        'photon_stream.production.isdc',
-        'photon_stream.production.sim',
-        'photon_stream.simulation_truth',
+        'photon_stream_production',
+        'photon_stream_production.ethz',
+        'photon_stream_production.isdc',
+        'photon_stream_production.sim',
     ],
     package_data={
-        'photon_stream': [
+        'photon_stream_production': [
             'tests/resources/*',
-            'production/resources/*',
+            'resources/*',
         ]
     },
     install_requires=[
@@ -37,8 +34,6 @@ setup(
         'filelock'
     ],
     entry_points={'console_scripts': [
-        'phs_extract_muons = ' +
-        'photon_stream.muons.isdc_production.worker_node_main:main',
         'phs.isdc.obs.synclapalma = ' +
         'photon_stream.production.isdc.synclapalma_main:main',
         'phs.isdc.obs.produce = ' +
