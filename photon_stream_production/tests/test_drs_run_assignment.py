@@ -1,20 +1,21 @@
 import numpy as np
 import photon_stream as ps
+import photon_stream_production as psp
 import pkg_resources
 import os
 
 runinfo_path = pkg_resources.resource_filename(
-    'photon_stream',
+    'photon_stream_production',
     os.path.join('tests', 'resources', 'runinfo_20161115_to_20170103.csv')
 )
 
-drs_fRunID_for_obs_run = ps.production.drs_run._drs_fRunID_for_obs_run
+drs_fRunID_for_obs_run = psp.drs_run._drs_fRunID_for_obs_run
 
 
 def test_drs_run_assignment():
 
-    ri = ps.production.runinfo.read(runinfo_path)
-    ro = ps.production.drs_run.assign_drs_runs(ri)
+    ri = psp.runinfo.read(runinfo_path)
+    ro = psp.drs_run.assign_drs_runs(ri)
 
     ri = ri[(ri.fNight > 20161229) & (ri.fNight <= 20170102)]
     ro = ro[(ro.fNight > 20161229) & (ro.fNight <= 20170102)]
@@ -23,7 +24,7 @@ def test_drs_run_assignment():
         assert row.fNight == ro.loc[i, 'fNight']
         assert row.fRunID == ro.loc[i, 'fRunID']
 
-        if row.fRunTypeKey == ps.production.runinfo.OBSERVATION_RUN_TYPE_KEY:
+        if row.fRunTypeKey == psp.runinfo.OBSERVATION_RUN_TYPE_KEY:
 
             first_method_drs_run_id = drs_fRunID_for_obs_run(
                 runinfo=ri,

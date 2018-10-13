@@ -180,14 +180,14 @@ def jobs_and_directory_tree(
 def output_tree(tree):
     os.makedirs(tree['phs_dir'], exist_ok=True, mode=0o755)
     readme_input_path = pkg_resources.resource_filename(
-        'photon_stream',
-        join('production', 'resources', 'phs_readme.md')
+        'photon_stream_production',
+        join('resources', 'phs_readme.md')
     )
     shutil.copy(readme_input_path, tree['phs_readme_path'])
 
     introduction_input_path = pkg_resources.resource_filename(
-        'photon_stream',
-        join('production', 'resources', 'phs_introduction.pdf')
+        'photon_stream_production',
+        join('resources', 'phs_introduction.pdf')
     )
     shutil.copy(introduction_input_path, tree['phs_introduction_path'])
     os.makedirs(tree['obs_dir'], exist_ok=True, mode=0o755)

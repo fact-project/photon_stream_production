@@ -14,8 +14,8 @@ from ..tools import jsonlog
 QSUB_OBS_PRODUCE_PREFIX = 'phs_obs_produce'
 
 fact_tools_xml_path = pkg_resources.resource_filename(
-    'photon_stream',
-    os.path.join('production', 'resources', 'observations_pass4.xml')
+    'photon_stream_production',
+    os.path.join('resources', 'observations_pass4.xml')
 )
 
 _fact_tools_jar_path = join(

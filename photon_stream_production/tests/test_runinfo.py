@@ -1,36 +1,36 @@
 import numpy as np
-import photon_stream as ps
+import photon_stream_production as psp
 import pkg_resources
 import os
 import pandas as pd
 
 
 old_runstatus_path = pkg_resources.resource_filename(
-    'photon_stream',
+    'photon_stream_production',
     os.path.join('tests', 'resources', 'runstatus_20161115_to_20161231.csv')
 )
 
 new_runstatus_path = pkg_resources.resource_filename(
-    'photon_stream',
+    'photon_stream_production',
     os.path.join('tests', 'resources', 'runstatus_20161115_to_20170103.csv')
 )
 
 runinfo_path = pkg_resources.resource_filename(
-    'photon_stream',
+    'photon_stream_production',
     os.path.join('tests', 'resources', 'runinfo_20161115_to_20170103.csv')
 )
 
 
 def test_old_runstatus_has_correct_keys():
-    rs = ps.production.runinfo.read(old_runstatus_path)
+    rs = psp.runinfo.read(old_runstatus_path)
     for key in rs.keys():
-        assert key in ps.production.runinfo.RUNSTATUS_KEYS
+        assert key in psp.runinfo.RUNSTATUS_KEYS
 
 
 def test_new_runstatus_has_correct_keys():
-    rs = ps.production.runinfo.read(new_runstatus_path)
+    rs = psp.runinfo.read(new_runstatus_path)
     for key in rs.keys():
-        assert key in ps.production.runinfo.RUNSTATUS_KEYS
+        assert key in psp.runinfo.RUNSTATUS_KEYS
 
 
 def test_remove_from_first_when_also_in_second():
@@ -57,7 +57,7 @@ def test_remove_from_first_when_also_in_second():
         ]
     )
 
-    r = ps.production.runinfo.remove_from_first_when_also_in_second(
+    r = psp.runinfo.remove_from_first_when_also_in_second(
         first=all_runjobs,
         second=runqstat
     )

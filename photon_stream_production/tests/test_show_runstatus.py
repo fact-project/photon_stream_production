@@ -1,8 +1,8 @@
-import photon_stream as ps
+import photon_stream_production as psp
 
 
 def test_status_bar_string():
-    progress = ps.production.show_runstatus.progress
+    progress = psp.show_runstatus.progress
 
     progress_bar_str = progress(ratio=0.0, length=50)
     assert len(progress_bar_str) < 50
