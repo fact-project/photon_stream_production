@@ -1,4 +1,4 @@
-# Production
+# Photon-Stream-Production [![Build Status](https://travis-ci.org/fact-project/photon_stream_production.svg?branch=master)](https://travis-ci.org/fact-project/photon_stream_production)
 
 ## Install Java 8 
 
