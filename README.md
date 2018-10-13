@@ -1,8 +1,8 @@
 # Photon-Stream-Production [![Build Status](https://api.travis-ci.com/fact-project/photon_stream_production.svg?branch=master)](https://travis-ci.com/fact-project/photon_stream_production)
 
-Produce the photon-stream for FACT from zfits-raw-fiels at ISDC or at local python-scoop-cluster.
+Produce the photon-stream for FACT from zfits-raw-fiels at ISDC or at local python-scoop-cluster. This package contains tools to organize the production of the photon-stream. The actuall single-photon-extraction is done in fact-tools.
 
-## Install Java 8 
+## Install Java 8 (for fact-tools)
 
 ```bash
 mkdir java8
