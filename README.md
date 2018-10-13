@@ -1,5 +1,7 @@
 # Photon-Stream-Production [![Build Status](https://api.travis-ci.com/fact-project/photon_stream_production.svg?branch=master)](https://travis-ci.com/fact-project/photon_stream_production)
 
+Produce the photon-stream for FACT from zfits-raw-fiels at ISDC or at local python-scoop-cluster.
+
 ## Install Java 8 
 
 ```bash
@@ -83,11 +85,14 @@ This also runs the unit tests and should end with:
 ```
 
 
-## Install photo-stream
+## Install photon-stream and photon-stream-production
 
 ```bash
 git clone https://github.com/fact-project/photon_stream.git
 pip install -e photon_stream/
+
+git clone https://github.com/fact-project/photon_stream_production.git
+pip install -e photon_stream_production/
 ```
 
 # Publish on web server
