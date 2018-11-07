@@ -14,8 +14,13 @@ import os
 from filelock import FileLock
 from filelock import Timeout
 import subprocess as sp
-from photon_stream.production.tools import jsonlog 
+import datetime
+import sys
 
+
+def jsonlog(msg):
+    print('{time:"' + datetime.datetime.now().isoformat() + '"' + ', msg:"' + msg + '"}')
+    sys.stdout.flush()
 
 def folder_wise_rsync_a(
     destination_path,
