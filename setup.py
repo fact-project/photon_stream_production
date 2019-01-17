@@ -35,19 +35,19 @@ setup(
     ],
     entry_points={'console_scripts': [
         'phs.isdc.obs.synclapalma = ' +
-        'photon_stream.production.isdc.synclapalma_main:main',
+        'photon_stream_production.isdc.synclapalma_main:main',
         'phs.isdc.obs.produce = ' +
-        'photon_stream.production.isdc.produce_main:main',
+        'photon_stream_production.isdc.produce_main:main',
         'phs.isdc.obs.produce.worker = ' +
-        'photon_stream.production.isdc.worker_node_produce:main',
+        'photon_stream_production.isdc.worker_node_produce:main',
         'phs.isdc.obs.status = ' +
-        'photon_stream.production.isdc.status_main:main',
+        'photon_stream_production.isdc.status_main:main',
         'phs.isdc.obs.status.worker = ' +
-        'photon_stream.production.isdc.worker_node_status:main',
+        'photon_stream_production.isdc.worker_node_status:main',
         'phs.sim.produce.worker = ' +
-        'photon_stream.production.sim.worker_node_produce:main',
+        'photon_stream_production.sim.worker_node_produce:main',
         'phs.isdc.backup.to.ethz = ' +
-        'photon_stream.production.backup_main:main',
+        'photon_stream_production.backup_main:main',
     ]},
     zip_safe=False,
 )

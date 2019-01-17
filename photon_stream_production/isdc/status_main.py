@@ -10,13 +10,13 @@ Options:
     -h | --help
 """
 import docopt
-import photon_stream as ps
+import photon_stream_production as psp
 
 
 def main():
     try:
         docopt.docopt(__doc__)
-        ps.production.isdc.status()
+        psp.isdc.status()
     except docopt.DocoptExit as e:
         print(e)
 if __name__ == '__main__':

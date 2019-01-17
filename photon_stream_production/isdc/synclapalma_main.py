@@ -10,15 +10,15 @@ Options:
     -h | --help
 """
 import docopt
-import photon_stream as ps
+import photon_stream_production as psp
 import os
 
 
 def main():
     try:
         docopt.docopt(__doc__)
-        ps.production.tools.jsonlog('Start')
-        ps.production.runstatus.update_to_latest(
+        psp.tools.jsonlog('Start')
+        psp.runstatus.update_to_latest(
             obs_dir=os.path.join(
                 '/gpfs0',
                 'fact',
@@ -29,9 +29,9 @@ def main():
             ),
             lock_timeout=23*60*60
         )
-        ps.production.tools.jsonlog('End')
+        psp.tools.jsonlog('End')
     except docopt.DocoptExit as e:
-        ps.production.tools.jsonlog(str(e))
+        psp.tools.jsonlog(str(e))
 
 if __name__ == '__main__':
     main()
