@@ -4,7 +4,7 @@ Usage: phs.obs.production.isdc.worker [options]
 Options:
     --java_path=PATH            [default: /home/guest/relleums/java8/jdk1.8.0_111]
     --fact_tools_jar_path=PATH  [default: /home/guest/relleums/fact_photon_stream/fact-tools/target/fact-tools-0.18.1.jar]
-    --fact_tools_xml_path=PATH  [default: /home/guest/relleums/fact_photon_stream/photon_stream/photon_stream/production/resources/observations_pass4.xml]
+    --fact_tools_xml_path=PATH  [default: /home/guest/relleums/fact_photon_stream/photon_stream_production/photon_stream_production/resources/observations_pass4.xml]
     --raw_path=PATH             [default: /fact/raw/2017/09/01/20170901_139.fits.fz]
     --drs_path=PATH             [default: /fact/raw/2017/09/01/20170901_129.drs.fits.gz]
     --aux_dir=PATH              [default: /fact/aux/2017/09/01/]
